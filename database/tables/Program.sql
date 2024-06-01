@@ -1,0 +1,9 @@
+CREATE TABLE [dbo].[Program]
+(
+  [Id] INT NOT NULL IDENTITY,
+  [Code] VARCHAR (50) NOT NULL,
+  [DisplayName] VARCHAR (50) NOT NULL,
+  [IsPrivate] BIT DEFAULT 0,
+
+  CONSTRAINT [PK_Program] PRIMARY KEY CLUSTERED ([Id] ASC)
+)
