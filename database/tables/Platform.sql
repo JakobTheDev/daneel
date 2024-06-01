@@ -1,0 +1,7 @@
+CREATE TABLE [dbo].[Platform]
+(
+  [Id] INT NOT NULL IDENTITY,
+  [DisplayName] VARCHAR (50) NOT NULL
+
+  CONSTRAINT [PK_Platform] PRIMARY KEY CLUSTERED ([Id] ASC)
+)
