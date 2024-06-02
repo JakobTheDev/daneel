@@ -27,6 +27,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
 	err = database.InitDB()
 	if err != nil {
 		log.Fatal(err)

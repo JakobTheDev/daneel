@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/JakobTheDev/daneel/cmd/platform"
+	"github.com/JakobTheDev/daneel/cmd/program"
 	"github.com/spf13/cobra"
 )
 
@@ -38,6 +39,7 @@ func Execute() {
 
 func init() {
 	RootCmd.AddCommand(platform.PlatformCmd)
+	RootCmd.AddCommand(program.ProgramCmd)
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
