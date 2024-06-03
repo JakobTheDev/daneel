@@ -2,18 +2,20 @@ package platform
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/JakobTheDev/daneel/internal/models"
 	"github.com/spf13/cobra"
 )
 
-// addCmd represents the add command
 var addCmd = &cobra.Command{
-	Use:   "add [PLATFORM]",
+	Use:   "add [platform]",
 	Short: "Add a bug bounty platform to daneel",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		err := models.AddPlatform(models.Platform{DisplayName: args[0]})
+		platformName := strings.ToLower(args[0])
+
+		err := models.AddPlatform(models.Platform{DisplayName: platformName})
 		if err != nil {
 			fmt.Println(err)
 		}
