@@ -2,6 +2,7 @@ package program
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/JakobTheDev/daneel/internal/models"
 	"github.com/spf13/cobra"
@@ -16,8 +17,8 @@ var addCmd = &cobra.Command{
 	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
 		program := models.Program{
-			DisplayName:  args[0],
-			PlatformName: platformName,
+			DisplayName:  strings.ToLower(args[0]),
+			PlatformName: strings.ToLower(platformName),
 			IsPrivate:    isPrivate,
 		}
 

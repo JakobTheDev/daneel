@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package platform
 
 import (
@@ -9,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// platformCmd represents the platform command
 var PlatformCmd = &cobra.Command{
 	Use:   "platform [command]",
 	Short: "Manage bug bounty platforms within daneel",

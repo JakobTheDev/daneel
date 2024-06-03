@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/JakobTheDev/daneel/cmd/domain"
 	"github.com/JakobTheDev/daneel/cmd/platform"
 	"github.com/JakobTheDev/daneel/cmd/program"
 	"github.com/spf13/cobra"
@@ -21,15 +22,10 @@ var RootCmd = &cobra.Command{
    \_____/    |       ||   _   || | |   ||   |___ |   |___ |       |
               |______| |__| |__||_|  |__||_______||_______||_______|
 
-              A bug bounty robot
+              A bug bounty bot
 	`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := RootCmd.Execute()
 	if err != nil {
@@ -40,13 +36,7 @@ func Execute() {
 func init() {
 	RootCmd.AddCommand(platform.PlatformCmd)
 	RootCmd.AddCommand(program.ProgramCmd)
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
+	RootCmd.AddCommand(domain.DomainCmd)
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.daneel.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	RootCmd.PersistentFlags().BoolP("table", "t", false, "Print output in a table (default false)")
 }
