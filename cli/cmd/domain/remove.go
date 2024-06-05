@@ -1,4 +1,4 @@
-package platform
+package domain
 
 import (
 	"fmt"
@@ -9,13 +9,13 @@ import (
 )
 
 var removeCmd = &cobra.Command{
-	Use:   "remove [platform]",
-	Short: "Remove a bug bounty platform",
+	Use:   "remove [domain]",
+	Short: "Remove a domain from a program",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		platformName := strings.ToLower(args[0])
+		domainName := strings.ToLower(args[0])
 
-		err := models.RemovePlatform(models.Platform{DisplayName: platformName})
+		err := models.RemoveDomain(models.Domain{DomainName: domainName})
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -23,5 +23,5 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
-	PlatformCmd.AddCommand(removeCmd)
+	DomainCmd.AddCommand(removeCmd)
 }

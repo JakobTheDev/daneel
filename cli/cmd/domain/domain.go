@@ -9,8 +9,8 @@ import (
 var ProgramName string
 
 var DomainCmd = &cobra.Command{
-	Use:   "domain [command]",
-	Short: "Manage domains within daneel",
+	Use:   "domain",
+	Short: "Manage domains within a program",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("domain called")

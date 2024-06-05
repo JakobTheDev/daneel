@@ -11,7 +11,7 @@ var isOutOfScope bool
 
 var addCmd = &cobra.Command{
 	Use:   "add [domain]",
-	Short: "Add a domain to daneel",
+	Short: "Add a domain to a program",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := models.AddDomain(models.Domain{
@@ -27,6 +27,6 @@ var addCmd = &cobra.Command{
 func init() {
 	DomainCmd.AddCommand(addCmd)
 
-	addCmd.Flags().BoolVar(&isOutOfScope, "no-scope", false, "Mark the program as out of scope (default false)")
-	addCmd.MarkFlagRequired("program")
+	addCmd.Flags().BoolVar(&isOutOfScope, "no-scope", false, "Mark the domain as out of scope (default false)")
+	addCmd.MarkPersistentFlagRequired("program")
 }

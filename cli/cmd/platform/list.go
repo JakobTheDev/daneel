@@ -14,7 +14,7 @@ var showInactive bool
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Lists bug bounty platforms tracked by daneel",
+	Short: "Lists bug bounty platforms",
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		platforms, err := models.ListPlatforms(showInactive)

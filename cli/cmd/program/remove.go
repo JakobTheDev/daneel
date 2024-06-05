@@ -10,7 +10,7 @@ import (
 
 var removeCmd = &cobra.Command{
 	Use:   "remove [program]",
-	Short: "Remove a bug bounty program from daneel (soft delete)",
+	Short: "Remove a bug bounty program",
 	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := models.RemoveProgram(models.Program{DisplayName: strings.ToLower(args[0])})

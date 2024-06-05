@@ -2,7 +2,7 @@ CREATE TABLE [dbo].[Domain]
 (
   [Id] INT NOT NULL IDENTITY,
   [ProgramId] INT NOT NULL,
-  [DomainName] VARCHAR (50) NOT NULL,
+  [DomainName] VARCHAR (256) NOT NULL,
   [IsInScope] BIT DEFAULT 1,
   [IsActive] BIT DEFAULT 1,
 

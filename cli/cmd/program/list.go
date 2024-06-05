@@ -10,8 +10,8 @@ import (
 )
 
 var listCmd = &cobra.Command{
-	Use:   "list [OPTIONS]",
-	Short: "Lists bug bounty programs tracked by daneel",
+	Use:   "list",
+	Short: "List bug bounty programs",
 	Run: func(cmd *cobra.Command, args []string) {
 		programs, err := models.ListPrograms()
 		if err != nil {

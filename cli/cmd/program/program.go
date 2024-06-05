@@ -11,7 +11,7 @@ var Platform string
 
 var ProgramCmd = &cobra.Command{
 	Use:   "program",
-	Short: "Manage bug bounty programs within daneel",
+	Short: "Manage bug bounty programs",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("program called")
