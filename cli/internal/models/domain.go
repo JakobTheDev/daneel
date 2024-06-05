@@ -13,7 +13,7 @@ type Domain struct {
 	IsActive    bool
 }
 
-func ListDomain(programName string, showOutOfScope bool) ([]Domain, error) {
+func ListDomains(programName string, showOutOfScope bool) ([]Domain, error) {
 	rows, err := database.DB.Query(`SELECT d.*,
 										(SELECT p.[DisplayName]
 										FROM Program p
@@ -79,7 +79,7 @@ func AddDomain(domain Domain) error {
 }
 
 func RemoveDomain(d Domain) error {
-	_, err := database.DB.Exec("UPDATE [Domain] SET [IsActive] = 0 WHERE [Domain] = ?", d.DomainName)
+	_, err := database.DB.Exec("UPDATE [Domain] SET [IsActive] = 0 WHERE [DomainName] = ?", d.DomainName)
 	if err != nil {
 		return err
 	}

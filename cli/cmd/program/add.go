@@ -13,7 +13,7 @@ var isPrivate bool
 
 var addCmd = &cobra.Command{
 	Use:   "add [program]",
-	Short: "Adds a bug bounty program to daneel",
+	Short: "Add a bug bounty program",
 	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
 		program := models.Program{

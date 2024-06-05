@@ -10,7 +10,7 @@ import (
 
 var addCmd = &cobra.Command{
 	Use:   "add [platform]",
-	Short: "Add a bug bounty platform to daneel",
+	Short: "Add a bug bounty platform",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		platformName := strings.ToLower(args[0])

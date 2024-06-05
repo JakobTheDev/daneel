@@ -12,10 +12,10 @@ import (
 var showOutOfScope bool
 
 var listCmd = &cobra.Command{
-	Use:   "list [OPTIONS]",
-	Short: "Lists domains tracked by daneel",
+	Use:   "list",
+	Short: "Lists domains within a program",
 	Run: func(command *cobra.Command, args []string) {
-		programs, err := models.ListDomain(ProgramName, showOutOfScope)
+		programs, err := models.ListDomains(ProgramName, showOutOfScope)
 		if err != nil {
 			fmt.Println(err)
 		}
