@@ -13,6 +13,22 @@ type Domain struct {
 	IsActive    bool
 }
 
+func GetDomain(domainName string) (Domain, error) {
+	var domain Domain
+
+	err := database.DB.QueryRow(`SELECT d.*,
+									(SELECT p.[DisplayName]
+									FROM Program p
+									WHERE p.[Id] = d.[ProgramId]) AS ProgramName
+								FROM [Domain] d
+								WHERE [DomainName] = ?`, domainName).Scan(&domain.ID, &domain.ProgramId, &domain.DomainName, &domain.IsInScope, &domain.IsActive, &domain.ProgramName)
+	if err != nil {
+		return domain, err
+	}
+
+	return domain, nil
+}
+
 func ListDomains(programName string, showOutOfScope bool) ([]Domain, error) {
 	rows, err := database.DB.Query(`SELECT d.*,
 										(SELECT p.[DisplayName]
