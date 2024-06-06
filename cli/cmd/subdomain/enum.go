@@ -13,7 +13,10 @@ var enumCmd = &cobra.Command{
 	Use:   "enum [domain]",
 	Short: "Enumerate subdomains for a domain",
 	Run: func(cmd *cobra.Command, args []string) {
-		var err error
+		var (
+			err        error
+			isInserted bool
+		)
 
 		if ProgramName != "" {
 			// Check the program exists
@@ -41,6 +44,16 @@ var enumCmd = &cobra.Command{
 			}
 			log.Printf("Found %d subdomains\n", len(subdomains))
 			// Insert into database
+			var newSubdomains []string
+			for _, subdomain := range subdomains {
+				err, isInserted = models.AddSubdomain(models.Subdomain{DomainName: domain.DomainName, SubdomainName: subdomain})
+				if err != nil {
+					log.Fatalf("Error adding subdomain to database: %v", err)
+				}
+				if isInserted {
+					newSubdomains = append(newSubdomains, subdomain)
+				}
+			}
 			// Handle results
 		} else {
 			fmt.Println("No domain or program specified")
