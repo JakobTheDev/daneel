@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/JakobTheDev/daneel/internal/database"
 )
 
@@ -49,59 +51,45 @@ func ListSubdomains(programName string, domainName string, showOutOfScope bool) 
 	return subdomains, nil
 }
 
-func AddSubdomain(subdomain Subdomain) error {
-	var err error
-
+func AddSubdomain(subdomain Subdomain) (err error, isInserted bool) {
 	err = database.DB.QueryRow(`SELECT [Id] 
 								FROM [Domain]
 								WHERE [DomainName] = ?`, subdomain.DomainName).Scan(&subdomain.DomainId)
 	if err != nil {
-		return err
+		return err, false
 	}
 	if subdomain.DomainId == 0 {
-		return nil
-	}
-
-	row := database.DB.QueryRow(`
-	MERGE INTO [Subdomain] AS target
-	USING (VALUES (?, ?, ?)) AS source ([DomainId], [SubdomainName], [IsInScope])
-	ON target.[SubdomainName] = source.[SubdomainName]
-	WHEN MATCHED THEN
-		UPDATE SET target.[IsActive] = 1,
-				   target.[IsInScope] = source.[IsInScope]
-	WHEN NOT MATCHED THEN
-		INSERT ([DomainId], [SubdomainName], [IsInScope])
-		VALUES (source.[DomainId], source.[SubdomainName], source.[IsInScope])
-	OUTPUT \$action`, subdomain.DomainId, subdomain.SubdomainName, subdomain.IsInScope)
-
-	var action string
-	err = row.Scan(&action)
-	if err != nil {
-		return err
+		return fmt.Errorf("Domain not found"), false
 	}
 
 	// Insert domain if not exists, else set to active
-	// REfactor this to use a merge statement
-	// row := database.DB.QueryRow(`
-	// 	IF NOT EXISTS (
-	// 		SELECT 1
-	// 		FROM [Subdomain]
-	// 		WHERE [SubdomainName] = ?)
-	// 	INSERT INTO [Subdomain] ([DomainId], [SubdomainName], [IsInScope]) VALUES (?, ?, ?)
-	// 	ELSE UPDATE [Subdomain]
-	// 		 SET [IsInScope] = ?
-	// 		 WHERE [SubdomainName] = ?
-	// 	OUTPUT $action`, subdomain.DomainName, subdomain.DomainId, subdomain.SubdomainName, subdomain.IsInScope, subdomain.IsInScope, subdomain.SubdomainName)
+	row := database.DB.QueryRow(`
+		DECLARE @IsInserted BIT
+		IF NOT EXISTS (
+			SELECT 1
+			FROM [Subdomain]
+			WHERE [SubdomainName] = ?)
+		BEGIN
+			INSERT INTO [Subdomain] ([DomainId], [SubdomainName], [IsInScope]) VALUES (?, ?, ?);
+			SET @IsInserted = 1;
+		END
+		ELSE 
+		BEGIN
+			UPDATE [Subdomain]
+				SET [IsInScope] = ?
+				WHERE [SubdomainName] = ?;
+			SET @IsInserted = 0;
+		END
+		SELECT @IsInserted`, subdomain.SubdomainName, subdomain.DomainId, subdomain.SubdomainName, subdomain.IsInScope, subdomain.IsInScope, subdomain.SubdomainName)
 
-	// var action string
-	// err = row.Scan(&action)
-	// if err != nil {
-	// 	return err
-	// }
+	err = row.Scan(&isInserted)
+	if err != nil {
+		return err, false
+	}
 
-	println(action)
+	fmt.Println("isInserted", isInserted)
 
-	return nil
+	return nil, isInserted
 }
 
 func RemoveSubdomain(subdomain Subdomain) error {

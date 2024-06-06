@@ -14,7 +14,7 @@ var addCmd = &cobra.Command{
 	Short: "Add a subdomain to daneel",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		err := models.AddSubdomain(models.Subdomain{
+		err, _ := models.AddSubdomain(models.Subdomain{
 			SubdomainName: args[0],
 			IsInScope:     !isOutOfScope,
 			DomainName:    DomainName})
