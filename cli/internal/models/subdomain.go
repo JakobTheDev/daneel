@@ -62,19 +62,44 @@ func AddSubdomain(subdomain Subdomain) error {
 		return nil
 	}
 
-	// Insert domain if not exists, else set to active
-	_, err = database.DB.Exec(`
-		IF NOT EXISTS (
-			SELECT 1 
-			FROM [Subdomain] 
-			WHERE [SubdomainName] = ?) 
-		INSERT INTO [Subdomain] ([DomainId], [SubdomainName], [IsInScope]) VALUES (?, ?, ?) 
-		ELSE UPDATE [Subdomain] 
-			 SET [IsInScope] = ? 
-			 WHERE [SubdomainName] = ?`, subdomain.DomainName, subdomain.DomainId, subdomain.SubdomainName, subdomain.IsInScope, subdomain.IsInScope, subdomain.SubdomainName)
+	row := database.DB.QueryRow(`
+	MERGE INTO [Subdomain] AS target
+	USING (VALUES (?, ?, ?)) AS source ([DomainId], [SubdomainName], [IsInScope])
+	ON target.[SubdomainName] = source.[SubdomainName]
+	WHEN MATCHED THEN
+		UPDATE SET target.[IsActive] = 1,
+				   target.[IsInScope] = source.[IsInScope]
+	WHEN NOT MATCHED THEN
+		INSERT ([DomainId], [SubdomainName], [IsInScope])
+		VALUES (source.[DomainId], source.[SubdomainName], source.[IsInScope])
+	OUTPUT \$action`, subdomain.DomainId, subdomain.SubdomainName, subdomain.IsInScope)
+
+	var action string
+	err = row.Scan(&action)
 	if err != nil {
 		return err
 	}
+
+	// Insert domain if not exists, else set to active
+	// REfactor this to use a merge statement
+	// row := database.DB.QueryRow(`
+	// 	IF NOT EXISTS (
+	// 		SELECT 1
+	// 		FROM [Subdomain]
+	// 		WHERE [SubdomainName] = ?)
+	// 	INSERT INTO [Subdomain] ([DomainId], [SubdomainName], [IsInScope]) VALUES (?, ?, ?)
+	// 	ELSE UPDATE [Subdomain]
+	// 		 SET [IsInScope] = ?
+	// 		 WHERE [SubdomainName] = ?
+	// 	OUTPUT $action`, subdomain.DomainName, subdomain.DomainId, subdomain.SubdomainName, subdomain.IsInScope, subdomain.IsInScope, subdomain.SubdomainName)
+
+	// var action string
+	// err = row.Scan(&action)
+	// if err != nil {
+	// 	return err
+	// }
+
+	println(action)
 
 	return nil
 }
