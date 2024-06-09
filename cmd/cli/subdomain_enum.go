@@ -1,4 +1,4 @@
-package subdomain
+package cli
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var enumCmd = &cobra.Command{
+var subdomainEnumCmd = &cobra.Command{
 	Use:   "enum [domain]",
 	Short: "Enumerate subdomains for a domain",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -18,16 +18,16 @@ var enumCmd = &cobra.Command{
 			isInserted bool
 		)
 
-		if ProgramName != "" {
+		if programName != "" {
 			// Check the program exists
 			// Get domains for the program
 			// for each, enumerate subdomains
 			// Insert into database
 			// Handle results
-		} else if DomainName != "" {
+		} else if domainName != "" {
 			// Check the domain exists
 			var domain models.Domain
-			domain, err = models.GetDomain(DomainName)
+			domain, err = models.GetDomain(domainName)
 			if err != nil {
 				log.Fatalf("Failed to get domain. Make sure it's been added to a program.")
 				log.Fatal(err)
@@ -62,10 +62,10 @@ var enumCmd = &cobra.Command{
 }
 
 func init() {
-	SubdomainCmd.AddCommand(enumCmd)
+	subdomainCmd.AddCommand(subdomainEnumCmd)
 
-	enumCmd.Flags().StringVar(&ProgramName, "program", "", "A bug bounty program to enumerate subdomains for")
-	enumCmd.Flags().StringVar(&DomainName, "domain", "", "The domain to enumerate (must be tracked by daneel)")
-	enumCmd.MarkFlagsOneRequired("program", "domain")
-	enumCmd.MarkFlagsMutuallyExclusive("program", "domain")
+	subdomainEnumCmd.Flags().StringVar(&programName, "program", "", "A bug bounty program to enumerate subdomains for")
+	subdomainEnumCmd.Flags().StringVar(&domainName, "domain", "", "The domain to enumerate (must be tracked by daneel)")
+	subdomainEnumCmd.MarkFlagsOneRequired("program", "domain")
+	subdomainEnumCmd.MarkFlagsMutuallyExclusive("program", "domain")
 }

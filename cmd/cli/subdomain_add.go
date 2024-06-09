@@ -1,4 +1,4 @@
-package subdomain
+package cli
 
 import (
 	"fmt"
@@ -7,9 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var isOutOfScope bool
-
-var addCmd = &cobra.Command{
+var subdomainAddCmd = &cobra.Command{
 	Use:   "add [subdomain]",
 	Short: "Add a subdomain to daneel",
 	Args:  cobra.ExactArgs(1),
@@ -17,7 +15,7 @@ var addCmd = &cobra.Command{
 		err, _ := models.AddSubdomain(models.Subdomain{
 			SubdomainName: args[0],
 			IsInScope:     !isOutOfScope,
-			DomainName:    DomainName})
+			DomainName:    domainName})
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -25,9 +23,9 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	SubdomainCmd.AddCommand(addCmd)
+	subdomainCmd.AddCommand(subdomainAddCmd)
 
-	addCmd.Flags().StringVar(&DomainName, "domain", "", "The subdomain's parent domain")
-	addCmd.Flags().BoolVar(&isOutOfScope, "no-scope", false, "Mark the subdomain as out of scope (default false)")
-	addCmd.MarkFlagRequired("domain")
+	subdomainAddCmd.Flags().StringVar(&domainName, "domain", "", "The subdomain's parent domain")
+	subdomainAddCmd.Flags().BoolVar(&isOutOfScope, "no-scope", false, "Mark the subdomain as out of scope (default false)")
+	subdomainAddCmd.MarkFlagRequired("domain")
 }

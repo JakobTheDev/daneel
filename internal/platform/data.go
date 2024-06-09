@@ -1,16 +1,10 @@
-package models
+package platform
 
 import (
 	"github.com/JakobTheDev/daneel/internal/database"
 )
 
-type Platform struct {
-	ID          int64
-	DisplayName string
-	IsActive    bool
-}
-
-func ListPlatforms(showInactive bool) ([]Platform, error) {
+func GetPlatforms(showInactive bool) ([]Platform, error) {
 	rows, err := database.DB.Query(`SELECT * 
 									FROM [Platform] 
 									WHERE ([IsActive] = 1 OR ? = 1)

@@ -1,4 +1,4 @@
-package program
+package cli
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var listCmd = &cobra.Command{
+var programListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List bug bounty programs",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -40,5 +40,5 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	ProgramCmd.AddCommand(listCmd)
+	programCmd.AddCommand(programListCmd)
 }

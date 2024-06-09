@@ -1,21 +1,19 @@
-package domain
+package cli
 
 import (
 	"fmt"
 
-	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/domain"
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
 )
 
-var showOutOfScope bool
-
-var listCmd = &cobra.Command{
+var domainListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Lists domains within a program",
 	Run: func(command *cobra.Command, args []string) {
-		programs, err := models.ListDomains(ProgramName, showOutOfScope)
+		programs, err := domain.ListDomains(programName, showOutOfScope)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -43,7 +41,7 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	DomainCmd.AddCommand(listCmd)
+	domainCmd.AddCommand(domainListCmd)
 
-	listCmd.Flags().BoolVar(&showOutOfScope, "show-no-scope", false, "Show out-of-scope domains (default false)")
+	domainListCmd.Flags().BoolVar(&showOutOfScope, "show-no-scope", false, "Show out-of-scope domains (default false)")
 }

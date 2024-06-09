@@ -1,22 +1,11 @@
-package models
+package domain
 
 import (
 	"github.com/JakobTheDev/daneel/internal/database"
 )
 
-type Domain struct {
-	ID          int64
-	ProgramId   int64
-	ProgramName string
-	DomainName  string
-	IsInScope   bool
-	IsActive    bool
-}
-
-func GetDomain(domainName string) (Domain, error) {
-	var domain Domain
-
-	err := database.DB.QueryRow(`SELECT d.*,
+func GetDomain(domainName string) (domain Domain, err error) {
+	err = database.DB.QueryRow(`SELECT d.*,
 									(SELECT p.[DisplayName]
 									FROM Program p
 									WHERE p.[Id] = d.[ProgramId]) AS ProgramName

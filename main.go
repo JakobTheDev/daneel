@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/JakobTheDev/daneel/cmd"
+	"github.com/JakobTheDev/daneel/cmd/cli"
 	"github.com/JakobTheDev/daneel/internal/database"
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/joho/godotenv"
@@ -30,5 +30,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cmd.Execute()
+	cli.Execute()
 }

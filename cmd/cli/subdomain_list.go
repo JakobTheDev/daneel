@@ -1,6 +1,4 @@
-// Refactored code for subdomain
-
-package subdomain
+package cli
 
 import (
 	"fmt"
@@ -11,13 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var showOutOfScope bool
-
 var subdomainListCmd = &cobra.Command{
 	Use:   "list [OPTIONS]",
 	Short: "Lists subdomains",
 	Run: func(command *cobra.Command, args []string) {
-		subdomains, err := models.ListSubdomains(ProgramName, DomainName, showOutOfScope)
+		subdomains, err := models.ListSubdomains(programName, domainName, showOutOfScope)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -45,10 +41,10 @@ var subdomainListCmd = &cobra.Command{
 }
 
 func init() {
-	SubdomainCmd.AddCommand(subdomainListCmd)
+	subdomainCmd.AddCommand(subdomainListCmd)
 
-	subdomainListCmd.Flags().StringVar(&ProgramName, "program", "", "Bug bounty program")
-	subdomainListCmd.Flags().StringVar(&DomainName, "domain", "", "The subdomain's parent domain")
+	subdomainListCmd.Flags().StringVar(&programName, "program", "", "Bug bounty program")
+	subdomainListCmd.Flags().StringVar(&domainName, "domain", "", "The subdomain's parent domain")
 	subdomainListCmd.Flags().BoolVar(&showOutOfScope, "show-no-scope", false, "Show out-of-scope subdomains (default false)")
 	subdomainListCmd.MarkFlagsOneRequired("program", "domain")
 	subdomainListCmd.MarkFlagsMutuallyExclusive("program", "domain")

@@ -1,4 +1,4 @@
-package subdomain
+package cli
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var removeCmd = &cobra.Command{
+var subdomainRemoveCmd = &cobra.Command{
 	Use:   "remove [subdomain]",
 	Short: "Remove a subdomain",
 	Args:  cobra.ExactArgs(1),
@@ -23,5 +23,5 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
-	SubdomainCmd.AddCommand(removeCmd)
+	subdomainCmd.AddCommand(subdomainRemoveCmd)
 }

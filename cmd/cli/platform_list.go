@@ -1,4 +1,4 @@
-package platform
+package cli
 
 import (
 	"fmt"
@@ -9,10 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Flags
-var showInactive bool
-
-var listCmd = &cobra.Command{
+var platformListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Lists bug bounty platforms",
 	Args:  cobra.NoArgs,
@@ -44,7 +41,7 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	PlatformCmd.AddCommand(listCmd)
+	platformCmd.AddCommand(platformListCmd)
 
-	listCmd.Flags().BoolVarP(&showInactive, "inactive", "i", false, "Show inactive platforms")
+	platformListCmd.Flags().BoolVarP(&showInactive, "inactive", "i", false, "Show inactive platforms")
 }

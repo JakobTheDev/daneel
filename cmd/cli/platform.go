@@ -1,4 +1,4 @@
-package platform
+package cli
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var PlatformCmd = &cobra.Command{
+var platformCmd = &cobra.Command{
 	Use:   "platform [command]",
 	Short: "Manage bug bounty platforms",
 	Args:  cobra.MinimumNArgs(1),

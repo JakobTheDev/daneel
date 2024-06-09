@@ -1,4 +1,4 @@
-package program
+package cli
 
 import (
 	"fmt"
@@ -6,10 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Command flags
-var Platform string
-
-var ProgramCmd = &cobra.Command{
+var programCmd = &cobra.Command{
 	Use:   "program",
 	Short: "Manage bug bounty programs",
 	Args:  cobra.MinimumNArgs(1),
@@ -19,5 +16,5 @@ var ProgramCmd = &cobra.Command{
 }
 
 func init() {
-	ProgramCmd.Flags().StringVarP(&Platform, "platform", "p", "", "Bug bounty platform")
+	programCmd.Flags().StringVarP(&platformName, "platform", "p", "", "Bug bounty platform")
 }

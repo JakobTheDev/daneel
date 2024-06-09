@@ -1,4 +1,4 @@
-package program
+package cli
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var removeCmd = &cobra.Command{
+var programRemoveCmd = &cobra.Command{
 	Use:   "remove [program]",
 	Short: "Remove a bug bounty program",
 	Args:  cobra.RangeArgs(1, 2),
@@ -21,5 +21,5 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
-	ProgramCmd.AddCommand(removeCmd)
+	programCmd.AddCommand(programRemoveCmd)
 }

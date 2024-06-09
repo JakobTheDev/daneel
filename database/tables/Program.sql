@@ -2,7 +2,7 @@ CREATE TABLE [dbo].[Program]
 (
   [Id] INT NOT NULL IDENTITY,
   [PlatformId] INT NOT NULL,
-  [DisplayName] VARCHAR (50) NOT NULL,
+  [Name] VARCHAR (50) NOT NULL,
   [IsPrivate] BIT DEFAULT 0,
   [IsActive] BIT DEFAULT 1,
 

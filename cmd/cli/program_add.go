@@ -1,4 +1,4 @@
-package program
+package cli
 
 import (
 	"fmt"
@@ -8,10 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var platformName string
-var isPrivate bool
-
-var addCmd = &cobra.Command{
+var programAddCmd = &cobra.Command{
 	Use:   "add [program]",
 	Short: "Add a bug bounty program",
 	Args:  cobra.RangeArgs(1, 2),
@@ -30,10 +27,10 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	ProgramCmd.AddCommand(addCmd)
+	programCmd.AddCommand(programAddCmd)
 
-	addCmd.Flags().StringVarP(&platformName, "platform", "p", "", "The platform the program is on (required)")
-	addCmd.Flags().BoolVar(&isPrivate, "private", false, "Mark the program as private (default false)")
+	programAddCmd.Flags().StringVarP(&platformName, "platform", "p", "", "The platform the program is on (required)")
+	programAddCmd.Flags().BoolVar(&isPrivate, "private", false, "Mark the program as private (default false)")
 
-	addCmd.MarkFlagRequired("platform")
+	programAddCmd.MarkFlagRequired("platform")
 }

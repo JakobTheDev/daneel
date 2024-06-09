@@ -1,4 +1,4 @@
-package subdomain
+package cli
 
 import (
 	"fmt"
@@ -6,10 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var DomainName string
-var ProgramName string
-
-var SubdomainCmd = &cobra.Command{
+var subdomainCmd = &cobra.Command{
 	Use:   "subdomain",
 	Short: "Manage subdomains",
 	Args:  cobra.MinimumNArgs(1),

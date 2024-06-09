@@ -2,7 +2,7 @@ CREATE TABLE [dbo].[Subdomain]
 (
   [Id] INT NOT NULL IDENTITY,
   [DomainId] INT NOT NULL,
-  [SubdomainName] VARCHAR (256) NOT NULL,
+  [Name] VARCHAR (256) NOT NULL,
   [IsInScope] BIT DEFAULT 1,
   [IsActive] BIT DEFAULT 1,
 

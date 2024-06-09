@@ -1,4 +1,4 @@
-package platform
+package cli
 
 import (
 	"fmt"
@@ -8,14 +8,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var removeCmd = &cobra.Command{
-	Use:   "remove [platform]",
-	Short: "Remove a bug bounty platform",
+var platformAddCmd = &cobra.Command{
+	Use:   "add [platform]",
+	Short: "Add a bug bounty platform",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		platformName := strings.ToLower(args[0])
 
-		err := models.RemovePlatform(models.Platform{DisplayName: platformName})
+		err := models.AddPlatform(models.Platform{DisplayName: platformName})
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -23,5 +23,5 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
-	PlatformCmd.AddCommand(removeCmd)
+	platformCmd.AddCommand(platformAddCmd)
 }
