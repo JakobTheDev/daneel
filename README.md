@@ -8,12 +8,4 @@
                     
                 A bug bounty bot
 
-
-
-## Tools
-
-**Automation framework**
-
-- Go
-- Cobra 
-- SQL Server
+  Coming soon...
