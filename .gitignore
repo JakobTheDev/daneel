@@ -25,4 +25,6 @@ go.work.sum
 */obj/
 
 .env
-cli/config/
+config/
+daneel
+PRIVATE.md
