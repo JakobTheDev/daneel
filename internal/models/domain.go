@@ -1,12 +1,12 @@
 package models
 
-type Subdomain struct {
+type Domain struct {
 	// Database fields
 	ID        int64
-	DomainId  uint64
+	ProgramId int64
 	Name      string
 	IsInScope bool
 	IsActive  bool
 	// Extra fields
-	DomainName string
+	ProgramName string
 }

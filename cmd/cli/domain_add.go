@@ -1,9 +1,10 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/JakobTheDev/daneel/internal/domain"
+	"github.com/JakobTheDev/daneel/internal/models"
 	"github.com/spf13/cobra"
 )
 
@@ -12,12 +13,12 @@ var addDomainCmd = &cobra.Command{
 	Short: "Add a domain to a program",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		err := domain.AddDomain(domain.Domain{
-			DomainName:  args[0],
+		err := domain.AddDomain(models.Domain{
+			Name:        args[0],
 			IsInScope:   !isOutOfScope,
 			ProgramName: programName})
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 	},
 }

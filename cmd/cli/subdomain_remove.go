@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
 	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/subdomain"
 	"github.com/spf13/cobra"
 )
 
@@ -15,9 +16,9 @@ var subdomainRemoveCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		subdomainName := strings.ToLower(args[0])
 
-		err := models.RemoveSubdomain(models.Subdomain{SubdomainName: subdomainName})
+		err := subdomain.RemoveSubdomain(models.Subdomain{Name: subdomainName})
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 	},
 }

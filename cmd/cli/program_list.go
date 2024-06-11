@@ -2,8 +2,9 @@ package cli
 
 import (
 	"fmt"
+	"log"
 
-	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/program"
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
@@ -13,9 +14,9 @@ var programListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List bug bounty programs",
 	Run: func(cmd *cobra.Command, args []string) {
-		programs, err := models.ListPrograms()
+		programs, err := program.ListPrograms()
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 
 		if cmd.Flag("table").Value.String() == "true" {
@@ -27,13 +28,13 @@ var programListCmd = &cobra.Command{
 			tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 
 			for _, program := range programs {
-				tbl.AddRow(program.Id, program.DisplayName, program.PlatformName, program.IsActive, program.IsPrivate)
+				tbl.AddRow(program.Id, program.Name, program.PlatformName, program.IsActive, program.IsPrivate)
 			}
 
 			tbl.Print()
 		} else {
 			for _, p := range programs {
-				fmt.Println(p.DisplayName)
+				fmt.Println(p.Name)
 			}
 		}
 	},

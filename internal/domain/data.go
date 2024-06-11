@@ -2,15 +2,16 @@ package domain
 
 import (
 	"github.com/JakobTheDev/daneel/internal/database"
+	"github.com/JakobTheDev/daneel/internal/models"
 )
 
-func GetDomain(domainName string) (domain Domain, err error) {
+func GetDomainFromDb(domainName string) (domain models.Domain, err error) {
 	err = database.DB.QueryRow(`SELECT d.*,
-									(SELECT p.[DisplayName]
+									(SELECT p.[Name]
 									FROM Program p
 									WHERE p.[Id] = d.[ProgramId]) AS ProgramName
 								FROM [Domain] d
-								WHERE [DomainName] = ?`, domainName).Scan(&domain.ID, &domain.ProgramId, &domain.DomainName, &domain.IsInScope, &domain.IsActive, &domain.ProgramName)
+								WHERE [Name] = ?`, domainName).Scan(&domain.ID, &domain.ProgramId, &domain.Name, &domain.IsInScope, &domain.IsActive, &domain.ProgramName)
 	if err != nil {
 		return domain, err
 	}
@@ -18,28 +19,28 @@ func GetDomain(domainName string) (domain Domain, err error) {
 	return domain, nil
 }
 
-func ListDomains(programName string, showOutOfScope bool) ([]Domain, error) {
+func GetDomainListFromDb(programName string, showOutOfScope bool) ([]models.Domain, error) {
 	rows, err := database.DB.Query(`SELECT d.*,
-										(SELECT p.[DisplayName]
+										(SELECT p.[Name]
 										FROM Program p
 										WHERE p.[Id] = d.[ProgramId]) AS ProgramName
 									FROM [Domain] d
 									JOIN [Program] p on d.[ProgramId] = p.[Id]
 									WHERE ([IsInScope] = 1 OR ? = 1) AND
 										d.[IsActive] = 1 AND
-										(p.[DisplayName] = ? OR ? = '')
-									ORDER BY [DomainName] ASC`, showOutOfScope, programName, programName)
+										(p.[Name] = ? OR ? = '')
+									ORDER BY [Name] ASC`, showOutOfScope, programName, programName)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var domains []Domain
+	var domains []models.Domain
 
 	for rows.Next() {
-		var domain Domain
+		var domain models.Domain
 
-		err := rows.Scan(&domain.ID, &domain.ProgramId, &domain.DomainName, &domain.IsInScope, &domain.IsActive, &domain.ProgramName)
+		err := rows.Scan(&domain.ID, &domain.ProgramId, &domain.Name, &domain.IsInScope, &domain.IsActive, &domain.ProgramName)
 		if err != nil {
 			return nil, err
 		}
@@ -53,12 +54,12 @@ func ListDomains(programName string, showOutOfScope bool) ([]Domain, error) {
 	return domains, nil
 }
 
-func AddDomain(domain Domain) error {
+func AddDomainToDb(domain models.Domain) error {
 	var err error
 
 	err = database.DB.QueryRow(`SELECT [Id] 
 								FROM [Program]
-								WHERE [DisplayName] = ?`, domain.ProgramName).Scan(&domain.ProgramId)
+								WHERE [Name] = ?`, domain.ProgramName).Scan(&domain.ProgramId)
 	if err != nil {
 		return err
 	}
@@ -71,11 +72,11 @@ func AddDomain(domain Domain) error {
 		IF NOT EXISTS (
 			SELECT 1 
 			FROM [Domain] 
-			WHERE [DomainName] = ?) 
-		INSERT INTO [Domain] ([ProgramId], [DomainName], [IsInScope]) VALUES (?, ?, ?) 
+			WHERE [Name] = ?) 
+		INSERT INTO [Domain] ([ProgramId], [Name], [IsInScope]) VALUES (?, ?, ?) 
 		ELSE UPDATE [Domain] 
 			 SET [IsInScope] = ? 
-			 WHERE [DomainName] = ?`, domain.DomainName, domain.ProgramId, domain.DomainName, domain.IsInScope, domain.IsInScope, domain.DomainName)
+			 WHERE [Name] = ?`, domain.Name, domain.ProgramId, domain.Name, domain.IsInScope, domain.IsInScope, domain.Name)
 	if err != nil {
 		return err
 	}
@@ -83,8 +84,8 @@ func AddDomain(domain Domain) error {
 	return nil
 }
 
-func RemoveDomain(d Domain) error {
-	_, err := database.DB.Exec("UPDATE [Domain] SET [IsActive] = 0 WHERE [DomainName] = ?", d.DomainName)
+func RemoveDomainFromDb(domain models.Domain) error {
+	_, err := database.DB.Exec("UPDATE [Domain] SET [IsActive] = 0 WHERE [Name] = ?", domain.Name)
 	if err != nil {
 		return err
 	}

@@ -26,3 +26,5 @@ go.work.sum
 
 .env
 config/
+daneel
+PRIVATE.md

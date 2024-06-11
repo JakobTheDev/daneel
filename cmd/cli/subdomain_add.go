@@ -1,9 +1,10 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/subdomain"
 	"github.com/spf13/cobra"
 )
 
@@ -12,12 +13,12 @@ var subdomainAddCmd = &cobra.Command{
 	Short: "Add a subdomain to daneel",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		err, _ := models.AddSubdomain(models.Subdomain{
-			SubdomainName: args[0],
-			IsInScope:     !isOutOfScope,
-			DomainName:    domainName})
+		_, err := subdomain.AddSubdomain(models.Subdomain{
+			Name:       args[0],
+			IsInScope:  !isOutOfScope,
+			DomainName: domainName})
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 	},
 }

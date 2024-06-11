@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
 	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/platform"
 	"github.com/spf13/cobra"
 )
 
@@ -15,9 +16,9 @@ var platformRemoveCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		platformName := strings.ToLower(args[0])
 
-		err := models.RemovePlatform(models.Platform{DisplayName: platformName})
+		err := platform.RemovePlatform(models.Platform{Name: platformName})
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 	},
 }

@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
 	"github.com/JakobTheDev/daneel/internal/domain"
+	"github.com/JakobTheDev/daneel/internal/models"
 	"github.com/spf13/cobra"
 )
 
@@ -15,9 +16,9 @@ var domainRemoveCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		domainName := strings.ToLower(args[0])
 
-		err := domain.RemoveDomain(domain.Domain{DomainName: domainName})
+		err := domain.RemoveDomain(models.Domain{Name: domainName})
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 	},
 }

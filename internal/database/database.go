@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	_ "github.com/denisenkom/go-mssqldb"
 )
@@ -17,10 +18,11 @@ func InitDB() error {
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASS")
 	dbServer := os.Getenv("DB_SERVER")
+	dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
 	dbDatabase := os.Getenv("DB_DATABASE")
 
 	dbConnectionString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;TrustServerCertificate=True",
-		dbServer, dbUser, dbPassword, 12345, dbDatabase)
+		dbServer, dbUser, dbPassword, dbPort, dbDatabase)
 
 	DB, err = sql.Open("mssql", dbConnectionString)
 	if err != nil {

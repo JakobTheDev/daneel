@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
 	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/program"
 	"github.com/spf13/cobra"
 )
 
@@ -13,15 +14,15 @@ var programAddCmd = &cobra.Command{
 	Short: "Add a bug bounty program",
 	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
-		program := models.Program{
-			DisplayName:  strings.ToLower(args[0]),
+		p := models.Program{
+			Name:         strings.ToLower(args[0]),
 			PlatformName: strings.ToLower(platformName),
 			IsPrivate:    isPrivate,
 		}
 
-		err := models.AddProgram(program)
+		err := program.AddProgram(p)
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 	},
 }

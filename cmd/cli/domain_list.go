@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/JakobTheDev/daneel/internal/domain"
 	"github.com/fatih/color"
@@ -15,7 +16,7 @@ var domainListCmd = &cobra.Command{
 	Run: func(command *cobra.Command, args []string) {
 		programs, err := domain.ListDomains(programName, showOutOfScope)
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 
 		if command.Flag("table").Value.String() == "true" {
@@ -23,17 +24,17 @@ var domainListCmd = &cobra.Command{
 			headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
 			columnFmt := color.New(color.FgYellow).SprintfFunc()
 
-			tbl := table.New("ID", "Program Name", "DomainName", "In Scope")
+			tbl := table.New("ID", "Program Name", "Domain Name", "In Scope")
 			tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 
 			for _, program := range programs {
-				tbl.AddRow(program.ID, program.ProgramName, program.DomainName, program.IsInScope)
+				tbl.AddRow(program.ID, program.ProgramName, program.Name, program.IsInScope)
 			}
 
 			tbl.Print()
 		} else {
 			for _, p := range programs {
-				fmt.Println(p.DomainName)
+				fmt.Println(p.Name)
 			}
 		}
 

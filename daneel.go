@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 
 	"github.com/JakobTheDev/daneel/cmd/cli"
@@ -10,17 +9,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var db *sql.DB
-
-type Platform struct {
-	ID          int64
-	DisplayName string
-}
-
 func main() {
 	var err error
 
-	err = godotenv.Load("../.env")
+	err = godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}

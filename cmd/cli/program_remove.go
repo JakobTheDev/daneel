@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
 	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/program"
 	"github.com/spf13/cobra"
 )
 
@@ -13,9 +14,9 @@ var programRemoveCmd = &cobra.Command{
 	Short: "Remove a bug bounty program",
 	Args:  cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
-		err := models.RemoveProgram(models.Program{DisplayName: strings.ToLower(args[0])})
+		err := program.RemoveProgram(models.Program{Name: strings.ToLower(args[0])})
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 	},
 }

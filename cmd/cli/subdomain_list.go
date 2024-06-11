@@ -2,8 +2,9 @@ package cli
 
 import (
 	"fmt"
+	"log"
 
-	"github.com/JakobTheDev/daneel/internal/models"
+	"github.com/JakobTheDev/daneel/internal/subdomain"
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
@@ -13,9 +14,9 @@ var subdomainListCmd = &cobra.Command{
 	Use:   "list [OPTIONS]",
 	Short: "Lists subdomains",
 	Run: func(command *cobra.Command, args []string) {
-		subdomains, err := models.ListSubdomains(programName, domainName, showOutOfScope)
+		subdomains, err := subdomain.ListSubdomains(programName, domainName, showOutOfScope)
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 
 		if command.Flag("table").Value.String() == "true" {
@@ -27,13 +28,13 @@ var subdomainListCmd = &cobra.Command{
 			tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 
 			for _, subdomain := range subdomains {
-				tbl.AddRow(subdomain.ID, subdomain.DomainName, subdomain.SubdomainName, subdomain.IsInScope)
+				tbl.AddRow(subdomain.ID, subdomain.DomainName, subdomain.Name, subdomain.IsInScope)
 			}
 
 			tbl.Print()
 		} else {
 			for _, s := range subdomains {
-				fmt.Println(s.SubdomainName)
+				fmt.Println(s.Name)
 			}
 		}
 
